@@ -12,15 +12,17 @@ const Part = (props) => (
 
 const Content = (props) => (
   <>
-    <Part name={props.part1.name} exercises={props.part1.exercises}/>
-    <Part name={props.part2.name} exercises={props.part2.exercises}/>
-    <Part name={props.part3.name} exercises={props.part3.exercises}/>
+    <Part name={props.parts[0].name} exercises={props.parts[0].exercises}/>
+    <Part name={props.parts[1].name} exercises={props.parts[1].exercises}/>
+    <Part name={props.parts[2].name} exercises={props.parts[2].exercises}/>
   </>
 )
 
-const Total = (props) => (
-  <p>Number of exercises {props.sum}</p>
-)
+const Total = (props) => {
+  const total=props.parts.reduce((acc, part) => acc + part.exercises, 0)
+  return <p>Number of exercises {total}</p>
+}
+
 
 const App = () => {
   const course = 'Half Stack application development'
@@ -42,8 +44,8 @@ const App = () => {
   return (
     <div>
       <Header course={course}/>
-      <Content part1={parts[0]} part2={parts[1]} part3={parts[2]}/>
-      <Total sum={parts[0].exercises + parts[1].exercises + parts[2].exercises}/>
+      <Content parts={parts}/>
+      <Total parts={parts}/>
     </div>
   )
 }
