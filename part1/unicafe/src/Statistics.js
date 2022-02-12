@@ -9,14 +9,16 @@ const Statistics = ({good, neutral, bad}) => {
     )
 
   const body = (
-      <>
+    <table>
+      <tbody>
         <StatisticLine label="good" value={good} />
         <StatisticLine label="neutral" value={neutral} />
         <StatisticLine label="bad" value={bad} />
         <StatisticLine label="all" value={total} />
         <StatisticLine label="average" value={total/3} />
         <StatisticLine label="positive" value={(good/total)*100 + " %"}/>
-      </>
+      </tbody>
+    </table>
   )
 
 
