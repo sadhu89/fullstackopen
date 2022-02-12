@@ -11,6 +11,8 @@ const App = () => {
     setVar(variable + 1)
   }
 
+  const total = good + neutral + bad
+
   return (
     <div>
       <h2>give feedback</h2>
@@ -22,6 +24,9 @@ const App = () => {
       <div>good {good} </div>
       <div>neutral {neutral}</div>
       <div>bad {bad}</div>
+      <div>all {total}</div>
+      <div>average {total/3}</div>
+      <div>positive {(good/total)*100} %</div>
     </div>
   )
 }
