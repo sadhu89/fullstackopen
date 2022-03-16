@@ -6,6 +6,7 @@ import CountryDetails from './components/CountryDetails'
 
 const App = () => {
   const [countries, setCountries] = useState([])
+  const [choosenCountry, setChoosenCountry] = useState(undefined)
 
   const [filteredCountries, setFilteredCountries] = useState(countries)
 
@@ -24,15 +25,18 @@ const App = () => {
     let newFilteredCountries = countries.filter(p => p.name.official.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0)
     if(event.target.value === ''){
       setFilteredCountries([])
+    } else if(newFilteredCountries.length === 1) {
+      setChoosenCountry(filterCountries[0])
     } else {
       setFilteredCountries(newFilteredCountries)
+      setChoosenCountry(undefined)
     }
   }
 
   return (
     <div>
       <Filter handleChange={filterCountries}/>
-      {filteredCountries.length === 1 ? <CountryDetails country={filteredCountries[0]}/> : <Countries countries={filteredCountries}/>}
+      { choosenCountry ? <CountryDetails country={choosenCountry}/> : <Countries countries={filteredCountries} setChoosenCountry={setChoosenCountry}/> }
     </div>
   )
 }

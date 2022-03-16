@@ -1,6 +1,6 @@
-const Country = ({country}) => (
+const Country = ({country, setChoosenCountry}) => (
   <>
-    <div>{country.name.official}</div>
+    <div>{country.name.official} <button onClick={() => setChoosenCountry(country)}>Show</button></div>
   </>
 )
 
