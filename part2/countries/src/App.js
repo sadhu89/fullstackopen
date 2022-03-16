@@ -22,11 +22,12 @@ const App = () => {
   console.log('render', countries.length, 'countries')
 
   const filterCountries = (event) => {
-    let newFilteredCountries = countries.filter(p => p.name.official.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0)
+    let newFilteredCountries = countries.filter(p => p.name.official.toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0 )
+
     if(event.target.value === ''){
       setFilteredCountries([])
     } else if(newFilteredCountries.length === 1) {
-      setChoosenCountry(filterCountries[0])
+      setChoosenCountry(newFilteredCountries[0])
     } else {
       setFilteredCountries(newFilteredCountries)
       setChoosenCountry(undefined)
