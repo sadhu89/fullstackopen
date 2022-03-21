@@ -19,7 +19,7 @@ const App = () => {
   },[])
   console.log('render', persons.length, 'persons')
 
-  const [filteredPersons, setFilteredPersons] = useState(persons)
+  const [filteredPersons, setFilteredPersons] = useState([])
 
   const [newPerson, setNewPerson] = useState({name: '', number: ''})
 
@@ -28,8 +28,14 @@ const App = () => {
     if(persons.map(p => p.name).indexOf(newPerson.name) >= 0) {
       return alert(`${newPerson.name} is already added to phonebook`)
     }
-    setPersons(persons.concat({name: newPerson.name, number: newPerson.number}))
-    setNewPerson({name: '', number: ''})
+    axios
+    .post('http://localhost:3001/persons', newPerson)
+      .then(response => {
+      let newPersons = persons.concat({id: response.data.id, name: newPerson.name, number: newPerson.number})
+      setPersons(newPersons)
+      setFilteredPersons(newPersons)
+      setNewPerson({name: '', number: ''})
+    })
   }
 
   const handleInputChange = (personFieldName) => {
