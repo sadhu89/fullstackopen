@@ -20,14 +20,24 @@ const App = () => {
 
   const [filteredPersons, setFilteredPersons] = useState([])
 
-  const [newPerson, setNewPerson] = useState({name: '', number: ''})
+  const [newPerson, setNewPerson] = useState({id: '', name: '', number: ''})
 
   const addPerson = (event) => {
     event.preventDefault()
-    if(persons.map(p => p.name).indexOf(newPerson.name) >= 0) {
-      return alert(`${newPerson.name} is already added to phonebook`)
-    }
-    personService
+    const personIndex = persons.map(p => p.name).indexOf(newPerson.name)
+    if( personIndex >= 0) {
+      if(window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with the new one?`)){
+        personService
+          .update(persons[personIndex].id, newPerson.number)
+          .then(_ => {
+            const newPersons = persons.filter(p => p.id !== persons[personIndex].id).concat(newPerson)
+            setPersons(newPersons)
+            setFilteredPersons(newPersons)
+            setNewPerson({name: '', number: ''})
+          })
+      }
+    } else {
+      personService
       .create(newPerson)
       .then(response => {
       let newPersons = persons.concat({id: response.id, name: newPerson.name, number: newPerson.number})
@@ -35,6 +45,7 @@ const App = () => {
       setFilteredPersons(newPersons)
       setNewPerson({name: '', number: ''})
     })
+    }
   }
 
   const handleInputChange = (personFieldName) => {
