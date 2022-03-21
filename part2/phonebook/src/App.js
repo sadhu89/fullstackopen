@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import personService from './services/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-        setFilteredPersons(response.data)
+    personService
+      .getAll()
+      .then(person => {
+        setPersons(person)
+        setFilteredPersons(person)
       })
   },[])
   console.log('render', persons.length, 'persons')
@@ -28,10 +27,10 @@ const App = () => {
     if(persons.map(p => p.name).indexOf(newPerson.name) >= 0) {
       return alert(`${newPerson.name} is already added to phonebook`)
     }
-    axios
-    .post('http://localhost:3001/persons', newPerson)
+    personService
+      .create(newPerson)
       .then(response => {
-      let newPersons = persons.concat({id: response.data.id, name: newPerson.name, number: newPerson.number})
+      let newPersons = persons.concat({id: response.id, name: newPerson.name, number: newPerson.number})
       setPersons(newPersons)
       setFilteredPersons(newPersons)
       setNewPerson({name: '', number: ''})
