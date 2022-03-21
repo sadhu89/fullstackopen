@@ -45,6 +45,18 @@ const App = () => {
     setFilteredPersons(persons.filter(p => p.name.toLowerCase().indexOf(event.target.value) >= 0))
   }
 
+  const handleDeletePerson = (id) => {
+    if(window.confirm("Are you sure?")){
+      personService
+        .remove(id)
+        .then(_ => {
+          let newPersons = persons.filter(person => person.id !== id)
+          setPersons(newPersons)
+          setFilteredPersons(newPersons)
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -52,7 +64,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm handleClick={addPerson} handleInputChange={handleInputChange} newPerson={newPerson}/>
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons}/>
+      <Persons persons={filteredPersons} handleDeletePerson={handleDeletePerson}/>
     </div>
   )
 }
