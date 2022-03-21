@@ -16,7 +16,6 @@ const App = () => {
         setFilteredPersons(person)
       })
   },[])
-  console.log('render', persons.length, 'persons')
 
   const [filteredPersons, setFilteredPersons] = useState([])
 
@@ -30,22 +29,22 @@ const App = () => {
         personService
           .update(persons[personIndex].id, newPerson.number)
           .then(_ => {
-            const newPersons = persons.filter(p => p.id !== persons[personIndex].id).concat(newPerson)
-            setPersons(newPersons)
-            setFilteredPersons(newPersons)
-            setNewPerson({name: '', number: ''})
+            const personsClone = [ ...persons ]
+            personsClone.splice(personIndex, 1, newPerson)
+            setPersons(personsClone)
+            setFilteredPersons(personsClone)
           })
       }
     } else {
       personService
-      .create(newPerson)
-      .then(response => {
-      let newPersons = persons.concat({id: response.id, name: newPerson.name, number: newPerson.number})
-      setPersons(newPersons)
-      setFilteredPersons(newPersons)
-      setNewPerson({name: '', number: ''})
-    })
+        .create(newPerson)
+        .then(response => {
+          let newPersons = persons.concat({id: response.id, name: newPerson.name, number: newPerson.number})
+          setPersons(newPersons)
+          setFilteredPersons(newPersons)
+        })
     }
+    setNewPerson({id: '', name: '', number: ''})
   }
 
   const handleInputChange = (personFieldName) => {
